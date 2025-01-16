@@ -55,3 +55,14 @@ class ForwardTradingBroker(Broker):
             )
             self.log_transaction(date, "SELL_FORWARD", 1, forward_price, 0)  # No upfront cost for selling
 
+
+
+    def run_backtest(self, data: pd.DataFrame):
+        """
+        Runs a backtest using the provided data.
+
+        Args:
+            data (pd.DataFrame): A DataFrame containing columns: 'date', 'spot_price', 'forward_price', 'predicted_spot'.
+        """
+        data['maturity_date'] = pd.to_datetime(data["Date"]) + pd.Timedelta(days=30)
+        
