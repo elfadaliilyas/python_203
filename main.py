@@ -19,6 +19,10 @@ def streamlit_interface(data, start_date, end_date, final_value, news_data):
     if end_date <= start_date:
         st.error("End Date must be later than Start Date. Please adjust your selection.")
 
+    
+    broker = ForwardTradingBroker(cash)
+
+    st.write(f"We will apply this strategy on this date range: {pd.to_datetime(new_start_date).strftime('%Y-%m-%d')} to {pd.to_datetime(new_end_date).strftime('%Y-%m-%d')}")
 
 
 
