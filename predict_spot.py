@@ -51,3 +51,14 @@ def fetch_brent_news_paged(start_page, end_page, start_date, end_date,news_data)
         end_page +=1
         fetch_brent_news_paged(start_page, end_page, start_date, end_date,news_data)  
     return pd.DataFrame(news_data)
+
+
+# Fetch historical data for Brent Crude Oil (BZ=F)
+def fetch_historical_data(start_date, end_date):
+    brent_data = yf.download("BZ=F", start=start_date, end=end_date)
+    return brent_data['Close']
+
+# Fetch real-time price for Brent Crude Oil
+def fetch_real_time_price():
+    brent = yf.Ticker("BZ=F")
+    return brent.history(period="1d")["Close"].iloc[-1]
