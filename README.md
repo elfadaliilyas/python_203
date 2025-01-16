@@ -1,5 +1,5 @@
 # python_203
-# Python_Programming
+# Python_Programming : Click on launch.bat to open up the streamlit
 # Commodities Market Sentiment Analysis and Portfolio Projection
 
 ## Project Overview
