@@ -94,3 +94,19 @@ def stationary_graph(start_page, end_page, start_date, end_date):
  
     return brent_present  
 
+def main_df(start_page, end_page, start_date, end_date,news_data):     
+    
+    # Fetch and display news
+    sentiment_data = fetch_brent_news_paged(start_page, end_page, start_date, end_date,news_data)
+    df_with_sentiment = evaluate_headlines_sentiment_with_daily_sentiment(sentiment_data)
+    df_with_sentiment = df_with_sentiment[["Date","Daily Sentiment"]]
+    
+    brent_present = stationary_graph(start_page, end_page, start_date, end_date)   
+    brent_futures = fetch_data("BZ=F", start_date=start_date, end_date=end_date)
+    brent_futures = brent_futures.reset_index()
+    brent_futures = brent_futures.rename(columns={"BZ=F": "Brent Futures"})
+    ## Get all the exchange rates from the top 5 different currencies
+    
+    top_currencies = ["EUR", "JPY"]
+
+
