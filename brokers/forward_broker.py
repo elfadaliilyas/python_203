@@ -42,3 +42,16 @@ class ForwardTradingBroker(Broker):
                 )
             )
             self.log_transaction(date, "BUY_FORWARD", 1, forward_price, self.cash)
+
+        elif predicted_spot_price < forward_price:
+            # Sell forward contract
+            self.positions.append(
+                ForwardContract(
+                    purchase_date=date,
+                    maturity_date=maturity_date,
+                    forward_price=forward_price,
+                    position_type="SELL",
+                )
+            )
+            self.log_transaction(date, "SELL_FORWARD", 1, forward_price, 0)  # No upfront cost for selling
+
