@@ -26,7 +26,17 @@ def streamlit_interface(data, start_date, end_date, final_value, news_data):
 
 
 
+    # Streamlit visualization
+    st.title("Cumulative PnL Over Time for Linear Regression Method")
+    # Line chart using Streamlit
+    st.subheader("Cumulative PnL Chart")
 
+
+
+    # Streamlit visualization
+    st.title("Cumulative PnL Over Time for Elastic Net Method")
+    # Line chart using Streamlit
+    st.subheader("Cumulative PnL Chart")
 
 
 if __name__ == "__main__":
