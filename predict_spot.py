@@ -127,5 +127,43 @@ def main_df(start_page, end_page, start_date, end_date,news_data):
     daily_pct_changes = daily_pct_changes.reset_index()
     daily_pct_changes = daily_pct_changes[["Date","Average Performance Top Oil Companies"]]
 
+    ## Get the CBOE Crude Oil Volatility Index
+    
+    ovx_data = fetch_data("^OVX",start_date, end_date)    
+    ovx_data = ovx_data.reset_index()
+    ovx_data = ovx_data.rename(columns={"^OVX": "OVX Index"})
+    exchange_rates_df['Date'] = pd.to_datetime(exchange_rates_df['Date'])
+    ovx_data['Date'] = pd.to_datetime(ovx_data['Date'])
+    brent_futures['Date'] = pd.to_datetime(brent_futures['Date'])
+    
+    # Merge all DataFrames on 'date'
+    merged_df = exchange_rates_df.merge(ovx_data, on='Date', how='inner')
+    merged_df = merged_df.merge(brent_futures, on='Date', how='inner')
+    merged_df = merged_df.merge(brent_present, on='Date', how='inner')
+    merged_df = merged_df.merge(df_with_sentiment, on='Date', how='inner')
+    merged_df = merged_df.merge(daily_pct_changes, on='Date', how='inner')
+    return merged_df
+ 
+def linear_reg(start_page, end_page, start_date, end_date,news_data):
+    merged_df = main_df(start_page, end_page, start_date, end_date,news_data)
+    y = merged_df['Brent Historical'] 
+    X = merged_df.drop(columns=['Brent Historical','Date'])
+    X = sm.add_constant(X)
+    # Fit the OLS model
+    model = sm.OLS(y, X).fit()   
+    model_demand = LinearRegression()                  
+    model_demand.fit(X, y)
+    predict_spot = model.predict(X)
 
+    # Start from the next trading day
+    new_start_date = merged_df['Date'].iloc[-1] + BDay(1)
+    # Generate trading days to match the same number of row for historical
+    future_dates = pd.date_range(start=new_start_date, periods=len(merged_df)+1, freq=BDay())
+    
+    actual_values = fetch_historical_data(start_date=new_start_date, end_date=future_dates[-1]).reset_index()
+
+    reconstructed_values = [fetch_historical_data(start_date=start_date, end_date=end_date).iloc[-1]]  # Start with the initial value
+    for diff in predict_spot:  # Skip the first NaN value
+        last_value = reconstructed_values[-1]
+        reconstructed_values.append(last_value + diff)
 
