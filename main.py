@@ -63,6 +63,23 @@ def streamlit_interface(data, start_date, end_date, final_value, news_data):
     # Create two columns for results
     col_left, col_right = st.columns(2)
 
+
+    # Calculate Linear Regression Returns
+    linear_data['Returns'] = linear_data['Cumulative PnL'].pct_change().fillna(0)
+    linear_sharpe_ratio = (
+        linear_data['Returns'].mean() / linear_data['Returns'].std()
+        if linear_data['Returns'].std() != 0
+        else 0
+    )
+
+    # Calculate ElasticNet Returns
+    elastic_data['Returns'] = elastic_data['Cumulative PnL'].pct_change().fillna(0)
+    elastic_sharpe_ratio = (
+        elastic_data['Returns'].mean() / elastic_data['Returns'].std()
+        if elastic_data['Returns'].std() != 0
+        else 0
+    )
+
     # Left Column - Linear Regression
     with col_left:
         st.header("Linear Regression Results")
@@ -70,6 +87,10 @@ def streamlit_interface(data, start_date, end_date, final_value, news_data):
         st.metric(
             label="Total PnL (Linear Regression)",
             value=f"${linear_data['Realized PnL'].sum():,.2f}",
+        )
+        st.metric(
+            label="Sharpe Ratio (Linear Regression)",
+            value=f"{linear_sharpe_ratio:.2f}",
         )
         st.dataframe(linear_data[["Date", "Behaviour", "Realized PnL"]])
 
@@ -80,6 +101,10 @@ def streamlit_interface(data, start_date, end_date, final_value, news_data):
         st.metric(
             label="Total PnL (ElasticNet)",
             value=f"${elastic_data['Realized PnL'].sum():,.2f}",
+        )
+        st.metric(
+            label="Sharpe Ratio (ElasticNet)",
+            value=f"{elastic_sharpe_ratio:.2f}",
         )
         st.dataframe(elastic_data[["Date", "Behaviour", "Realized PnL"]])
 
@@ -100,3 +125,4 @@ if __name__ == "__main__":
     data, start_date, end_date = streamlit_interface(
         data, start_date, end_date, final_value, news_data
     )
+
