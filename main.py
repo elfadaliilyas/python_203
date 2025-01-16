@@ -7,6 +7,13 @@ from datetime import date
 import matplotlib.pyplot as plt
 
 
+def streamlit_interface(data, start_date, end_date, final_value, news_data):
+
+    st.title("Streamlit Interface")
+    st.write("Welcome to your Streamlit app! Use the options below to interact.")
+    start_date = st.date_input("Select Start Date", value=start_date)
+    end_date = st.date_input("Select End Date", value=end_date)
+    cash = st.number_input("Initial Cash", value=10, min_value=0)
 
 
 
