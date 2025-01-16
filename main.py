@@ -18,26 +18,17 @@ def streamlit_interface(data, start_date, end_date, final_value, news_data):
     # Validate the selected date range
     if end_date <= start_date:
         st.error("End Date must be later than Start Date. Please adjust your selection.")
-
-    
+    # Run Linear Regression
+    linear_data,new_start_date,new_end_date = linear_reg(start_page, end_page, start_date, end_date, news_data)
     broker = ForwardTradingBroker(cash)
-
+    linear_pnl = broker.run_backtest(linear_data) - cash
     st.write(f"We will apply this strategy on this date range: {pd.to_datetime(new_start_date).strftime('%Y-%m-%d')} to {pd.to_datetime(new_end_date).strftime('%Y-%m-%d')}")
-
-
 
     # Streamlit visualization
     st.title("Cumulative PnL Over Time for Linear Regression Method")
     # Line chart using Streamlit
     st.subheader("Cumulative PnL Chart")
-
-
-
-    # Streamlit visualization
-    st.title("Cumulative PnL Over Time for Elastic Net Method")
-    # Line chart using Streamlit
-    st.subheader("Cumulative PnL Chart")
-
+    
 
 if __name__ == "__main__":
     start_date = "2024-09-01"
