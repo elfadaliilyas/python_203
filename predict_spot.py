@@ -108,5 +108,24 @@ def main_df(start_page, end_page, start_date, end_date,news_data):
     ## Get all the exchange rates from the top 5 different currencies
     
     top_currencies = ["EUR", "JPY"]
+    exchange_rates_df = get_daily_exchange_rates_yfinance(
+        base_currencies=top_currencies,
+        target_currency="USD",
+        start_date=start_date,
+        end_date=end_date
+    )
+    
+    ## Get all the correlations from the different tickers
+    
+    tickers = ["XOM", "CVX", "SHEL","TTE","BP","COP","E", "OXY","EQNR","REPYY"]  # Brent, ExxonMobil, Chevron, Shell, Eni,Occidental Petroleum, Conoco, Equinor, Repsol
+    price_data = fetch_data(tickers, start_date, end_date)
+    daily_pct_changes = price_data.pct_change().dropna()
+    # Step 3: Calculate the average performance across all companies
+    average_performance = daily_pct_changes.mean(axis=1)
+    # Add the average performance to the dataset
+    daily_pct_changes["Average Performance Top Oil Companies"] = average_performance
+    daily_pct_changes = daily_pct_changes.reset_index()
+    daily_pct_changes = daily_pct_changes[["Date","Average Performance Top Oil Companies"]]
+
 
 
