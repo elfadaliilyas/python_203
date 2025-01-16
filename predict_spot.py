@@ -81,5 +81,16 @@ def check_stationarity(series):
         print("The series is stationary.")
     else:
         print("The series is NOT stationary.")
-        
+
+def stationary_graph(start_page, end_page, start_date, end_date):
+    brent_close_prices = fetch_historical_data(start_date=start_date, end_date=end_date)
+    check_stationarity(brent_close_prices)
+
+    ## Brent time series is not stationary at all, we'll differentiate it to make it stationary.
+    differenced_series = brent_close_prices.diff()
+    check_stationarity(differenced_series)
+    differenced_series = differenced_series.reset_index().dropna()
+    brent_present = differenced_series.rename(columns={"BZ=F": "Brent Historical"})
+ 
+    return brent_present  
 
