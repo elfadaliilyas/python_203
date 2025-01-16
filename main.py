@@ -15,6 +15,10 @@ def streamlit_interface(data, start_date, end_date, final_value, news_data):
     end_date = st.date_input("Select End Date", value=end_date)
     cash = st.number_input("Initial Cash", value=10, min_value=0)
 
+    # Validate the selected date range
+    if end_date <= start_date:
+        st.error("End Date must be later than Start Date. Please adjust your selection.")
+
 
 
 
