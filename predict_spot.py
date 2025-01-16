@@ -62,3 +62,24 @@ def fetch_historical_data(start_date, end_date):
 def fetch_real_time_price():
     brent = yf.Ticker("BZ=F")
     return brent.history(period="1d")["Close"].iloc[-1]
+
+
+def fetch_data(tickers, start_date, end_date):
+    data = yf.download(tickers, start=start_date, end=end_date)["Close"]
+    return data
+
+def calculate_correlations(data):
+    return data.corr()
+
+def check_stationarity(series):
+    result = adfuller(series.dropna())  # Drop NaN values for the test
+    print("ADF Statistic:", result[0])
+    print("p-value:", result[1])
+    for key, value in result[4].items():
+        print(f"Critical Value ({key}): {value}")
+    if result[1] <= 0.05:
+        print("The series is stationary.")
+    else:
+        print("The series is NOT stationary.")
+        
+
