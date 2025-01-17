@@ -23,10 +23,11 @@ import matplotlib.pyplot as plt
 # for both 1st March and 30th March.
 
 
-def streamlit_interface(data, start_date, end_date, final_value, news_data):
+def streamlit_interface(data, start_date, end_date, final_value, news_data, start_page,end_page):
+    
     st.title("Streamlit Interface")
     st.write("Welcome to your Streamlit app! Use the options below to interact.")
-
+    print("ok")
     # Create a single row for inputs
     col1, col2, col3 = st.columns(3)
     with col1:
@@ -63,23 +64,6 @@ def streamlit_interface(data, start_date, end_date, final_value, news_data):
     # Create two columns for results
     col_left, col_right = st.columns(2)
 
-
-    # Calculate Linear Regression Returns
-    linear_data['Returns'] = linear_data['Cumulative PnL'].pct_change().fillna(0)
-    linear_sharpe_ratio = (
-        linear_data['Returns'].mean() / linear_data['Returns'].std()
-        if linear_data['Returns'].std() != 0
-        else 0
-    )
-
-    # Calculate ElasticNet Returns
-    elastic_data['Returns'] = elastic_data['Cumulative PnL'].pct_change().fillna(0)
-    elastic_sharpe_ratio = (
-        elastic_data['Returns'].mean() / elastic_data['Returns'].std()
-        if elastic_data['Returns'].std() != 0
-        else 0
-    )
-
     # Left Column - Linear Regression
     with col_left:
         st.header("Linear Regression Results")
@@ -87,10 +71,6 @@ def streamlit_interface(data, start_date, end_date, final_value, news_data):
         st.metric(
             label="Total PnL (Linear Regression)",
             value=f"${linear_data['Realized PnL'].sum():,.2f}",
-        )
-        st.metric(
-            label="Sharpe Ratio (Linear Regression)",
-            value=f"{linear_sharpe_ratio:.2f}",
         )
         st.dataframe(linear_data[["Date", "Behaviour", "Realized PnL"]])
 
@@ -102,16 +82,11 @@ def streamlit_interface(data, start_date, end_date, final_value, news_data):
             label="Total PnL (ElasticNet)",
             value=f"${elastic_data['Realized PnL'].sum():,.2f}",
         )
-        st.metric(
-            label="Sharpe Ratio (ElasticNet)",
-            value=f"{elastic_sharpe_ratio:.2f}",
-        )
         st.dataframe(elastic_data[["Date", "Behaviour", "Realized PnL"]])
 
     return data, start_date, end_date
 
-
-if __name__ == "__main__":
+def run():
     start_date = "2024-09-01"
     end_date = "2024-10-01"
     start_page = 1
@@ -123,6 +98,10 @@ if __name__ == "__main__":
     final_value = 0
     # # 1. Initialiser l'interface
     data, start_date, end_date = streamlit_interface(
-        data, start_date, end_date, final_value, news_data
+        data, start_date, end_date, final_value, news_data,start_page,end_page
     )
+
+
+if __name__ == "__main__":
+    run()    
 
