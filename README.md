@@ -1,3 +1,11 @@
+How to open this file:
+git clone this repo and if there are issues with different versions then type in these commands :
+conda create —name <name> anaconda numpy=1.26.4 python=3.10
+conda activate name
+pip install pybacktestchain
+pip install streamlit
+pip install textblob
+
 # python_203
 # Python_Programming : Click on launch.bat to open up the streamlit
 # Commodities Market Sentiment Analysis and Portfolio Projection
