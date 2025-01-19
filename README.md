@@ -2,7 +2,7 @@ How to open this file:
 git clone this repo and if there are issues with different versions then type in these commands :
 # Project Setup Guide
 
-create a Conda environment by running `conda create --name name numpy=1.26.4 python=3.10`, then activate it with `conda activate name`. Next, install the required Python packages: `pip install - r requirements.txt`. Once these steps are completed, you're ready to explore and run the project!
+create a Conda environment by running `conda create --name name numpy=1.26.4 python=3.10`, then activate it with `conda activate name`. Next, install the required Python packages: `pip install -r requirements.txt`. Once these steps are completed, you're ready to explore and run the project!
 
 # python_203
 # Python_Programming : Click on launch.bat to open up the streamlit
